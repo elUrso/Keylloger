@@ -7,17 +7,46 @@
 //
 
 import SwiftUI
+import Combine
+import AppKit
 
 struct ContentView: View {
-    var body: some View {
-        Text("Hello, World!")
-            .frame(maxWidth: .infinity, maxHeight: .infinity)
+    @State var buttonText: String = "Record"
+    @State var isRecording: Bool = false
+    let logger: Logger
+    
+    init(_ logger: Logger) {
+        self.logger = logger
     }
+    
+    var body: some View {
+        VStack{
+            Button(action: {
+                self.keylogger()
+            }) {
+                Text(buttonText)
+            }
+        }
+    }
+    
+    func keylogger() {
+        if isRecording {
+            buttonText = "Record"
+            isRecording = false
+            logger.record = false
+        } else {
+            buttonText = "Recording"
+            isRecording = true
+            logger.record = true
+        }
+    }
+    
+    
 }
 
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        ContentView()
+        ContentView(Logger())
     }
 }
